@@ -57,6 +57,7 @@ dependencies {
 
     // Lifecycle Runtime
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.3.0"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
     // Apollo GraphQL
     implementation "com.apollographql.apollo:apollo-runtime:2.5.4"

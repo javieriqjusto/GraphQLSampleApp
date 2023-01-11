@@ -10,6 +10,7 @@ class RickAndMortyApi {
         check(Looper.myLooper() == Looper.getMainLooper()){
             "Only the main thread can get the apolloClient instance"
         }
+
         val okHttpClient = OkHttpClient.Builder().build()
         return ApolloClient.builder()
             .serverUrl("https://rickandmortyapi.com/graphql")
