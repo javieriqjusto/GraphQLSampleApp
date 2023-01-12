@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.graphqlsample.databinding.FragmentCharactersListBinding
 import com.example.graphqlsample.view.adapter.CharacterAdapter
 import com.example.graphqlsample.view.state.ViewState
@@ -38,6 +39,18 @@ class CharactersListFragment: Fragment() {
         binding.charactersRv.adapter = characterAdapter
         viewModel.queryCharactersList()
         observeLiveData()
+
+        characterAdapter.onItemClicked = { character ->
+            character.let {
+                if (!character.id.isNullOrBlank()) {
+                    findNavController().navigate(
+                        CharactersListFragmentDirections.navigateToCharacterDetailsFragment(
+                            id = character.id
+                        )
+                    )
+                }
+            }
+        }
     }
 
 

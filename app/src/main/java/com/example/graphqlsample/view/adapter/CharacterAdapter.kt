@@ -2,10 +2,13 @@ package com.example.graphqlsample.view.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.databinding.BindingAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.example.apollographqlsample.CharactersListQuery
 import com.example.graphqlsample.R
 import com.example.graphqlsample.databinding.ItemCharacterBinding
@@ -14,6 +17,8 @@ import com.example.graphqlsample.databinding.ItemCharacterBinding
 // The DiffUtil and ListAdapter will boost the performance of the RecyclerView
 //The Adapter for displaying data
 class CharacterAdapter: ListAdapter<CharactersListQuery.Result, CharacterViewHolder>(CharacterDiffUtil()) {
+
+    var onItemClicked: ((CharactersListQuery.Result) -> Unit)? = null
 
     //onCreateViewHolder() only creates the CharacterViewHolder and returns it
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
@@ -29,6 +34,12 @@ class CharacterAdapter: ListAdapter<CharactersListQuery.Result, CharacterViewHol
     //onBindViewHolder() passes the an object of CharactersListQuery.Result to the data binding layout.
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
         holder.binding.character = getItem(position)
+
+        val character = getItem(position)
+
+        holder.binding.root.setOnClickListener {
+            onItemClicked?.invoke(character)
+        }
     }
 
 }
@@ -36,7 +47,6 @@ class CharacterAdapter: ListAdapter<CharactersListQuery.Result, CharacterViewHol
 //ViewHolder for storing and caching data
 //ViewHolder class which has as argument of ItemCharacterBinding and inherit from RecyclerView.ViewHolder
 class CharacterViewHolder(val binding: ItemCharacterBinding) : RecyclerView.ViewHolder(binding.root)
-
 
 class CharacterDiffUtil: DiffUtil.ItemCallback<CharactersListQuery.Result>(){
     override fun areItemsTheSame(
@@ -53,4 +63,9 @@ class CharacterDiffUtil: DiffUtil.ItemCallback<CharactersListQuery.Result>(){
         return oldItem == newItem
     }
 
+}
+
+@BindingAdapter("imageUrl")
+fun setImageUrl(imageView: ImageView, url: String?) {
+    imageView.load(url) { crossfade(true) }
 }
